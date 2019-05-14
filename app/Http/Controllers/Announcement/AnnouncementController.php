@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Announcement;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Announcement;
+use Illuminate\Support\Facades\Auth;
 
 class AnnouncementController extends Controller
 {
@@ -35,7 +37,29 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'         =>  'string|required',
+            'photo'         =>  'string',
+            'description'   =>  'string',
+            'price'         =>  'numeric|required',
+            'categorie_id'  =>  'integer|required'
+        ]);
+
+        $announcement = new Announcement();
+        $announcement->create([
+            'user_id'       =>  Auth::id(),
+            'title'         =>  $request->title,
+            'photo'         =>  $request->has('photo') ? $request->photo : '',
+            'description'   =>  $request->has('description') ? $request->description : '',
+            'price'         =>  $request->price,
+            'categorie_id'  => $request->categorie_id
+        ]);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Anúncio salvo com sucesso'
+        ], 200)
+
     }
 
     /**
