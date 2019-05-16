@@ -1863,13 +1863,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['visible'],
+  data: function data() {
+    return {
+      categories: [],
+      image: ''
+    };
+  },
   methods: {
     closeFormAnnouncement: function closeFormAnnouncement() {
       event.preventDefault();
       this.visible = false;
+    },
+    onImageChange: function onImageChange(e) {
+      this.image = e.target.files[0];
+    },
+    insertNewAnnouncement: function insertNewAnnouncement() {
+      event.preventDefault();
+      var form = document.querySelector("#form-insert-announcement");
+      var params = {
+        title: form.querySelector("#input-title-announcement").value,
+        price: form.querySelector("#input-price-announcement").value,
+        categorie_id: form.querySelector("#select-categorie-announcement").value,
+        description: form.querySelector("#textarea-description-announcement").value,
+        photo: form.querySelector("#input-photo-announcement").files[0]
+      };
+      axios.post('/announcements', params);
     }
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$http.get('/categories').then(function (response) {
+      return response.json();
+    }).then(function (categories) {
+      return _this.categories = categories;
+    });
   }
 });
 
@@ -37925,7 +37960,7 @@ var render = function() {
               }
             ],
             staticClass: "card mt-2",
-            attrs: { id: "form-insert-announcement" }
+            attrs: { id: "div-insert-announcement" }
           },
           [
             _c("div", { staticClass: "card-body" }, [
@@ -37934,108 +37969,152 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("p", { staticClass: "card-text" }),
-              _c("form", [
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "input-title-announcement" } }, [
-                    _vm._v("Titulo: ")
+              _c(
+                "form",
+                {
+                  attrs: {
+                    id: "form-insert-announcement",
+                    enctype: "multipart/form-data"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      { attrs: { for: "input-title-announcement" } },
+                      [_vm._v("Titulo: ")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "input-title-announcement",
+                        placeholder: "Digite o titulo de seu anúncio"
+                      }
+                    })
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      id: "input-title-announcement",
-                      placeholder: "Digite o titulo de seu anúncio"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "input-price-announcement" } }, [
-                    _vm._v("Valor: ")
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      { attrs: { for: "input-price-announcement" } },
+                      [_vm._v("Valor: ")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "input-price-announcement",
+                        placeholder: "Digite o valor de seu anúncio"
+                      }
+                    })
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      id: "input-price-announcement",
-                      placeholder: "Digite o valor de seu anúncio"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
-                    { attrs: { for: "input-categorie-announcement" } },
-                    [_vm._v("Categoria: ")]
-                  ),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      { attrs: { for: "select-categorie-announcement" } },
+                      [_vm._v("Categoria: ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        staticClass: "form-control",
+                        attrs: { id: "select-categorie-announcement" }
+                      },
+                      _vm._l(_vm.categories, function(categorie) {
+                        return _c(
+                          "option",
+                          { domProps: { value: categorie.id } },
+                          [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(categorie.categorie) +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ]),
                   _vm._v(" "),
-                  _c("select", {
-                    staticClass: "form-control",
-                    attrs: { id: "input-categorie-announcement" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "label",
-                    { attrs: { for: "textarea-description-announcement" } },
-                    [_vm._v("Descrição")]
-                  ),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      { attrs: { for: "textarea-description-announcement" } },
+                      [_vm._v("Descrição")]
+                    ),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      staticClass: "form-control",
+                      attrs: {
+                        placeholder: "Digite aqui a descrição do seu anúncio",
+                        id: "textarea-description-announcement",
+                        rows: "3"
+                      }
+                    })
+                  ]),
                   _vm._v(" "),
-                  _c("textarea", {
-                    staticClass: "form-control",
-                    attrs: {
-                      placeholder: "Digite aqui a descrição do seu anúncio",
-                      id: "textarea-description-announcement",
-                      rows: "3"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "custom-file" }, [
-                  _c("input", {
-                    staticClass: "custom-file-input",
-                    attrs: { type: "file", id: "input-photo-announcement" }
-                  }),
+                  _c("div", { staticClass: "custom-file" }, [
+                    _c("input", {
+                      staticClass: "custom-file-input",
+                      attrs: { type: "file", id: "input-photo-announcement" },
+                      on: { change: _vm.onImageChange }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      {
+                        staticClass: "custom-file-label",
+                        attrs: { for: "input-photo-announcement" }
+                      },
+                      [
+                        _vm._v(
+                          "\n                            Selecione uma foto\n                        "
+                        )
+                      ]
+                    )
+                  ]),
                   _vm._v(" "),
                   _c(
-                    "label",
+                    "button",
                     {
-                      staticClass: "custom-file-label",
-                      attrs: { for: "input-photo-announcement" }
+                      staticClass: "btn btn-outline-primary mt-3",
+                      on: {
+                        click: function($event) {
+                          return _vm.insertNewAnnouncement()
+                        }
+                      }
                     },
                     [
                       _vm._v(
-                        "\n                            Selecione uma foto\n                        "
+                        "\n                        Inserir\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-danger mt-3 ml-2",
+                      on: {
+                        click: function($event) {
+                          return _vm.closeFormAnnouncement()
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        Cancelar\n                    "
                       )
                     ]
                   )
-                ]),
-                _vm._v(" "),
-                _c("button", { staticClass: "btn btn-outline-primary mt-3" }, [
-                  _vm._v("Inserir")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-danger mt-3 ml-2",
-                    on: {
-                      click: function($event) {
-                        return _vm.closeFormAnnouncement()
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Cancelar\n                    "
-                    )
-                  ]
-                )
-              ]),
+                ]
+              ),
               _vm._v(" "),
               _c("p")
             ])

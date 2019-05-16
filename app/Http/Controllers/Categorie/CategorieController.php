@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Announcement;
+namespace App\Http\Controllers\Categorie;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Announcement;
-use Illuminate\Support\Facades\Auth;
+use App\Categorie;
 
-class AnnouncementController extends Controller
+class CategorieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        return Announcement::all();
+        return Categorie::all();
     }
 
     /**
@@ -37,23 +36,7 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title'         =>  'string|required',
-            'photo'         =>  'image|mimes:jpeg,jpg,png',
-            'description'   =>  'string',
-            'price'         =>  'numeric|required',
-            'categorie_id'  =>  'integer|required'
-        ]);
-        $request->merge(['user_id'=> Auth::id()]);
-
-        $announcement = new Announcement();
-        $announcement->create($request->all());
-
-        return response()->json([
-            'code' => 200,
-            'message' => 'Anúncio salvo com sucesso'
-        ], 200);
-
+        //
     }
 
     /**

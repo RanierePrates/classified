@@ -1,11 +1,11 @@
 <template>
     <div>
         <transition name="fade-form-announcement">
-            <div id="form-insert-announcement" v-show="visible" class="card mt-2">
+            <div id="div-insert-announcement" v-show="visible" class="card mt-2">
               <div class="card-body">
                 <h5 class="card-title">Inserir Novo Anúncio</h5>
                 <p class="card-text">
-                    <form>
+                    <form id="form-insert-announcement" enctype="multipart/form-data">
                         
                         <div class="form-group">
                             <label for="input-title-announcement">Titulo: </label>
@@ -20,8 +20,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="input-categorie-announcement">Categoria: </label>
-                            <select class="form-control" id="input-categorie-announcement">
+                            <label for="select-categorie-announcement">Categoria: </label>
+                            <select class="form-control" id="select-categorie-announcement">
+                                <option v-for="categorie in categories" :value="categorie.id">
+                                    {{ categorie.categorie }}
+                                </option>
                             </select>
                         </div>
 
@@ -33,17 +36,19 @@
                         </div>
 
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="input-photo-announcement">
+                            <input type="file" class="custom-file-input" id="input-photo-announcement" v-on:change="onImageChange">
                             <label class="custom-file-label" for="input-photo-announcement">
                                 Selecione uma foto
                             </label>
                         </div>
 
-                        <button class="btn btn-outline-primary mt-3">Inserir</button>
+                        <button class="btn btn-outline-primary mt-3" v-on:click="insertNewAnnouncement()">
+                            Inserir
+                        </button>
                         <button class="btn btn-outline-danger mt-3 ml-2" v-on:click="closeFormAnnouncement()">
                             Cancelar
                         </button>
-                        
+
                     </form>
                 </p>
               </div>
@@ -55,11 +60,40 @@
 <script>
     export default {
         props: ['visible'],
+        data() {
+            return {
+                categories: [],
+                image: ''
+            }
+        },
         methods: {
             closeFormAnnouncement() {
                 event.preventDefault();
                 this.visible = false;
+            },
+            onImageChange(e){
+                this.image = e.target.files[0];
+            },
+            insertNewAnnouncement() {
+                event.preventDefault();
+                let form = document.querySelector("#form-insert-announcement");
+
+                const params = {                    
+                    title: form.querySelector("#input-title-announcement").value,
+                    price: form.querySelector("#input-price-announcement").value,
+                    categorie_id: form.querySelector("#select-categorie-announcement").value,
+                    description: form.querySelector("#textarea-description-announcement").value,
+                    photo: form.querySelector("#input-photo-announcement").files[0]                    
+                }
+
+                axios.post('/announcements', params)
+
             }
+        },
+        created() {
+            this.$http.get('/categories')
+                .then(response => response.json())
+                .then(categories => this.categories = categories)
         }
     }
 </script>

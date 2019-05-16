@@ -17,7 +17,7 @@ class CreateAnnouncementsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('title');
-            $table->string('photo');            
+            $table->string('photo')->nullable();            
             $table->text('description');          
             $table->float('price');          
             $table->integer('categorie_id');          
