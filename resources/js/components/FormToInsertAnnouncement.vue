@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="input-photo-announcement" v-on:change="onImageChange">
+                            <input type="file" class="custom-file-input" id="input-photo-announcement">
                             <label class="custom-file-label" for="input-photo-announcement">
                                 Selecione uma foto
                             </label>
@@ -69,10 +69,7 @@
         methods: {
             closeFormAnnouncement() {
                 event.preventDefault();
-                this.visible = false;
-            },
-            onImageChange(e){
-                this.image = e.target.files[0];
+                this.visible = !this.visible;
             },
             insertNewAnnouncement() {
                 event.preventDefault();
@@ -87,6 +84,13 @@
                 }
 
                 axios.post('/announcements', params)
+                    .then(response => response.data)
+                    .then(data => {
+                        console.log(data)
+                    })
+                    
+
+                
 
             }
         },

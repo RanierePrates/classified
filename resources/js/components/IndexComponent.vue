@@ -9,7 +9,7 @@
                     <button class="btn btn-outline-primary">Pesquisar</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-secondary" v-on:click="openFormInsertAnnouncement()">
+                    <button class="btn btn-secondary" v-on:click="visible = true">
                         Inserir Anúncio
                     </button>
                 </div>
@@ -25,11 +25,6 @@
         data() {
             return {
                 visible: false
-            }
-        },
-        methods: {
-            openFormInsertAnnouncement() {
-                this.visible = true;
             }
         }
     }

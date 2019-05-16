@@ -41,11 +41,10 @@ class AnnouncementController extends Controller
             'title'         =>  'string|required',
             'photo'         =>  'image|mimes:jpeg,jpg,png',
             'description'   =>  'string',
-            'price'         =>  'numeric|required',
+            'price'         =>  'required',
             'categorie_id'  =>  'integer|required'
         ]);
         $request->merge(['user_id'=> Auth::id()]);
-
         $announcement = new Announcement();
         $announcement->create($request->all());
 

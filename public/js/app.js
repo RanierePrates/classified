@@ -1778,6 +1778,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1879,10 +1895,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     closeFormAnnouncement: function closeFormAnnouncement() {
       event.preventDefault();
-      this.visible = false;
-    },
-    onImageChange: function onImageChange(e) {
-      this.image = e.target.files[0];
+      this.visible = !this.visible;
     },
     insertNewAnnouncement: function insertNewAnnouncement() {
       event.preventDefault();
@@ -1894,7 +1907,11 @@ __webpack_require__.r(__webpack_exports__);
         description: form.querySelector("#textarea-description-announcement").value,
         photo: form.querySelector("#input-photo-announcement").files[0]
       };
-      axios.post('/announcements', params);
+      axios.post('/announcements', params).then(function (response) {
+        return response.data;
+      }).then(function (data) {
+        console.log(data);
+      });
     }
   },
   created: function created() {
@@ -1946,11 +1963,6 @@ __webpack_require__.r(__webpack_exports__);
     return {
       visible: false
     };
-  },
-  methods: {
-    openFormInsertAnnouncement: function openFormInsertAnnouncement() {
-      this.visible = true;
-    }
   }
 });
 
@@ -37909,12 +37921,38 @@ var render = function() {
             _vm._v(_vm._s(announcement.title))
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "card-text" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(announcement.description) +
-                "\n            "
-            )
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-text" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-12" }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(announcement.description) +
+                    "                    \n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mt-3" }, [
+              _c("div", { staticClass: "col-7" }, [
+                _c("div", [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(announcement.price) +
+                      "\n                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-5" }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(announcement.created_at) +
+                    "\n                    "
+                )
+              ])
+            ])
           ])
         ])
       ])
@@ -38062,8 +38100,7 @@ var render = function() {
                   _c("div", { staticClass: "custom-file" }, [
                     _c("input", {
                       staticClass: "custom-file-input",
-                      attrs: { type: "file", id: "input-photo-announcement" },
-                      on: { change: _vm.onImageChange }
+                      attrs: { type: "file", id: "input-photo-announcement" }
                     }),
                     _vm._v(" "),
                     _c(
@@ -38164,7 +38201,7 @@ var render = function() {
                 staticClass: "btn btn-secondary",
                 on: {
                   click: function($event) {
-                    return _vm.openFormInsertAnnouncement()
+                    _vm.visible = true
                   }
                 }
               },

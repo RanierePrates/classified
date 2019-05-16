@@ -3,9 +3,25 @@
 	    <div class="card mt-3" v-for="announcement in announcements">
 		  <div class="card-body">
 		    <h5 class="card-title">{{ announcement.title }}</h5>
-		    <p class="card-text">
-                {{ announcement.description }}
-            </p>
+            <hr>
+		    <div class="card-text">
+                <div class="row">
+                    
+                    <div class="col-12">
+                        {{ announcement.description }}                    
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-7">
+                        <div>
+                            {{ announcement.price }}
+                        </div>                        
+                    </div>
+                    <div class="col-5">
+                        {{ announcement.created_at }}
+                    </div>
+                </div>
+            </div>
 		  </div>
 		</div>
 	</div>
