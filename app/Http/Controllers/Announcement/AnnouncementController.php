@@ -16,7 +16,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        return Announcement::all();
+        return Announcement::paginate('5');
     }
 
     /**

@@ -1,6 +1,6 @@
 <template>
 	<div>		
-	    <div class="card mt-3" v-for="announcement in announcements">
+	    <div class="card mt-3" v-for="announcement in announcements.data" :key="announcement.id">
 		  <div class="card-body">
 		    <h5 class="card-title">{{ announcement.title }}</h5>
             <hr>
@@ -24,6 +24,8 @@
             </div>
 		  </div>
 		</div>
+        <pagination :align="center" :data="announcements" @pagination-change-page="getResults">
+        </pagination>
 	</div>
 
 
@@ -33,17 +35,21 @@
     export default {
         data() {
         	return {
-        		announcements: []
+        		announcements: {}
         	}
         },
 
-        created() {
-    
-            let promise = this.$http.get('/announcements');
-            promise
-              .then(res => res.json())
-              .then(announcements => this.announcements = announcements, err => console.log(err));
+        mounted() {
+            // Pega os resultados iniciais
+            this.getResults();
+        },
 
+        methods: {
+            getResults(page = 1) {
+                this.$http.get('/announcements?page=' + page)            
+                  .then(res => res.json())
+                  .then(announcements => this.announcements = announcements, err => console.log(err));
+            }
         }
     }
 </script>
